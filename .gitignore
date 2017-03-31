@@ -1,0 +1,17 @@
+*~
+*.log
+*.aux
+*.make
+/*.pdf
+*.d
+*.bbl
+*.blg
+*.fls
+*.rel
+*.temp
+*.gz
+.DS_Store
+*_diff.tex
+*_new.tex
+*_old.tex
+*.out
