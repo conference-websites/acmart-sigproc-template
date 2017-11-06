@@ -3,7 +3,7 @@ PRJ = sample-sigconf
 PYTHON3 := $(shell type -P python3 || echo "")
 
 ifeq ($(PYTHON3),)
-BUILD = pdflatex ${EXTRA} ${PRJ} && (ls ${PRJ}.aux | xargs -n 1 bibtex) && pdflatex ${EXTRA} ${PRJ} && pdflatex ${EXTRA}
+BUILD = pdflatex ${EXTRA} ${PRJ} && (ls ${PRJ}.aux | xargs -n 1 bibtex) && pdflatex ${EXTRA} ${PRJ} && pdflatex ${EXTRA} ${PRJ}
 else
 BUILD = .build/latexrun ${PRJ}
 endif
