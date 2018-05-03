@@ -5,7 +5,7 @@ PYTHON3 := $(shell type -P python3 || echo "")
 ifeq ($(PYTHON3),)
 BUILD = pdflatex ${EXTRA} ${PRJ} && (ls ${PRJ}.aux | xargs -n 1 bibtex) && pdflatex ${EXTRA} ${PRJ} && pdflatex ${EXTRA} ${PRJ}
 else
-BUILD = .build/latexrun ${PRJ}
+BUILD = python3 .build/latexrun ${PRJ}
 endif
 
 .PHONY: all view clean
