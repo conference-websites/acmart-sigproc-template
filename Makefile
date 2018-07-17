@@ -1,23 +1,34 @@
 PRJ = sample-sigconf
 
+# Small cheat to allow synchronization between PDF and .tex for supported editors (run `make S=1`)
+ifdef S
+EXTRA = -synctex=1
+endif
+
 PYTHON3 := $(shell type -P python3 || echo "")
 
 ifeq ($(PYTHON3),)
-BUILD = pdflatex ${EXTRA} ${PRJ} && (ls ${PRJ}.aux | xargs -n 1 bibtex) && pdflatex ${EXTRA} ${PRJ} && pdflatex ${EXTRA} ${PRJ}
+BUILD = pdflatex ${EXTRA} $< && (ls *.aux | xargs -n 1 bibtex) || pdflatex ${EXTRA} $< || pdflatex ${EXTRA} $<
 else
-BUILD = python3 .build/latexrun ${PRJ}
+BUILD = .build/latexrun -O . --latex-args="${EXTRA}" $<
 endif
 
-.PHONY: all view clean
+SOURCES=$(shell find . -name '*.tex' -or -name '*.bib' -or -name '*.sty')
+IMAGES=$(shell find figures -name '*.pdf')
 
-all : ${PRJ}.pdf
+all: $(addsuffix .pdf,${PRJ})
 
-${PRJ}.pdf : *.tex *.bib
+%.pdf: %.tex ${SOURCES} ${IMAGES}
 	${BUILD}
 
-view : ${PRJ}.pdf
-	open ${PRJ}.pdf &
+view: $(addsuffix .view,${PRJ})
+
+%.view: %.pdf
+	open $< &
+
+.PHONY: figures
+figures:
+	make -C figures
 
 clean:
-	rm -Rf latex.out
-	rm -f *.toc *.aux *.bbl *.blg *.log *~* *.bak *.out *synctex.gz ${PRJ}.pdf
+	/bin/rm -rf *.toc *.aux $(addsuffix .bbl,${PRJ}) *.blg *.log *~* *.bak *.out $(addsuffix .pdf,${PRJ}) cut.sh .latexrun.db* *.fls *.rel _region_.* *.synctex.gz

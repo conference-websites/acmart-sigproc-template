@@ -1,0 +1,41 @@
+#! /usr/bin/osascript
+
+on run argv
+    if not (count argv) = 2
+        return "Usage:\n    graffle2pdf <input file> <output file>"
+    end if
+
+    set pwd to do shell script "pwd"
+
+    set _input to item 1 of argv as text
+    set _output to item 2 of argv as text
+
+    if not _input starts with "/"
+        set _input to pwd & "/" & _input
+    end if
+
+    if not _output starts with "/"
+        set _output to pwd & "/" & _output
+    end if
+
+    try
+        set _input to (get POSIX file _input as alias)
+    on error errStr number errorNumber
+        return "ERROR: File [" & _input & "] does not exists or cannot be opened"
+    end try
+
+    set _output to (get POSIX file _output as string)
+
+    tell application id "com.omnigroup.OmniGraffle6"
+        set docs to (every document whose path is _input)
+        
+        if (count docs) = 1 then
+           set doc to item 1 in docs
+           save doc in file _output
+        else
+            open _input
+            save the first document in file _output
+            close the first document
+        end if
+    end tell
+end run

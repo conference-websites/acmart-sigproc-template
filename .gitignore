@@ -11,7 +11,12 @@
 *.temp
 *.gz
 .DS_Store
+*/.DS_Store
 *_diff.tex
 *_new.tex
 *_old.tex
 *.out
+*.cut
+.latexrun.db*
+*.toc
+old
