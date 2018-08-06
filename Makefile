@@ -10,7 +10,7 @@ PYTHON3 := $(shell type -P python3 || echo "")
 ifeq ($(PYTHON3),)
 BUILD = pdflatex ${EXTRA} $< && (ls *.aux | xargs -n 1 bibtex) || pdflatex ${EXTRA} $< || pdflatex ${EXTRA} $<
 else
-BUILD = .build/latexrun -O . --latex-args="${EXTRA}" $<
+BUILD = python3 .build/latexrun.py -O . --latex-args="${EXTRA}" $<
 endif
 
 SOURCES=$(shell find . -name '*.tex' -or -name '*.bib' -or -name '*.sty')
