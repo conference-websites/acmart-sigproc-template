@@ -1,4 +1,4 @@
-PRJ = sample-sigconf
+PRJ = akarsh
 
 # Small cheat to allow synchronization between PDF and .tex for supported editors (run `make S=1`)
 ifdef S
